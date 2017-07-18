@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+/*本CSS用户有分页的页面上，基于Bootstrap和Jquery，为分页页面提供布局*/
+body{background:#F8F8F8;}
+.title{background:#fff;margin-top:25px;height:54px;border:1px solid #E7EBEB;position:relative;}
+.title .c_search{margin:10px 0 10px 25px;width:400px;line-height:30px;width:400px;float:left;}
+.c_search div{float:left;margin-left:5px;}
+.c_search div span{font-size:12px;}
+.c_search form-control{border-color:#EFEFEF;}
+.c_search .btn{background:#2EB8F9;cursor:pointer;font-weight:700;color:#fff;width:60px;}
+.task_manage .btn{background:#2EB8F9;cursor:pointer;font-weight:700;color:#fff;}
+.title .c_new{width:100px;height:30px;float:right;margin:10px 50px 10px 0px;}
+.title .c_new .btn{background:#2EB8F9;font-weight:700;color:#fff;}
+.mytable{text-align: center;}
+.QueryList th{text-align: center}
+.QueryList td{text-align: center;font-size: 13px;}
+
+.pull-right{margin-right:3%;}
+.leaveButton{padding: 1px 4px;}

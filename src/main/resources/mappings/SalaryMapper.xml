@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warehouse.javacode.dao.SalaryMapper">
+  <resultMap id="BaseResultMap" type="com.warehouse.javacode.domain.Salary">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="loginid" jdbcType="VARCHAR" property="loginid" />
+    <result column="basesalary" jdbcType="DOUBLE" property="basesalary" />
+    <result column="plus" jdbcType="VARCHAR" property="plus" />
+    <result column="minus" jdbcType="VARCHAR" property="minus"/>
+    <result column="should" jdbcType="DOUBLE" property="should" />
+    <result column="actual" jdbcType="DOUBLE" property="actual" />
+    <result column="dayoff" jdbcType="VARCHAR" property="dayoff" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="dlt" jdbcType="INTEGER" property="dlt" />
+    <result column="quantity" jdbcType="DOUBLE" property="quantity" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, loginid, basesalary, plus,minus, should, actual, dayoff, remark, dlt, quantity
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from salary
+    where id = #{id,jdbcType=VARCHAR} and dlt=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from salary
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.warehouse.javacode.domain.Salary">
+    insert into salary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="loginid != null">
+        loginid,
+      </if>
+      <if test="basesalary != null">
+        basesalary,
+      </if>
+      <if test="plus != null">
+        plus,
+      </if>
+      <if test="minus != null">
+        minus,
+      </if>
+      <if test="should != null">
+        should,
+      </if>
+      <if test="actual != null">
+        actual,
+      </if>
+      <if test="dayoff != null">
+        dayoff,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="dlt != null">
+        dlt,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="loginid != null">
+        #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="basesalary != null">
+        #{basesalary,jdbcType=DOUBLE},
+      </if>
+      <if test="plus != null">
+        #{plus,jdbcType=DOUBLE},
+      </if>
+      <if test="minus != null">
+        #{minus,jdbcType=DOUBLE},
+      </if>
+      <if test="should != null">
+        #{should,jdbcType=DOUBLE},
+      </if>
+      <if test="actual != null">
+        #{actual,jdbcType=DOUBLE},
+      </if>
+      <if test="dayoff != null">
+        #{dayoff,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dlt != null">
+        #{dlt,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.warehouse.javacode.domain.Salary">
+    update salary
+    <set>
+      <if test="loginid != null">
+        loginid = #{loginid,jdbcType=VARCHAR},
+      </if>
+      <if test="basesalary != null">
+        basesalary = #{basesalary,jdbcType=DOUBLE},
+      </if>
+      <if test="plus != null">
+        plus = #{plus,jdbcType=DOUBLE},
+      </if>
+      <if test="minus != null">
+        minus = #{minus,jdbcType=DOUBLE},
+      </if>
+      <if test="should != null">
+        should = #{should,jdbcType=DOUBLE},
+      </if>
+      <if test="actual != null">
+        actual = #{actual,jdbcType=DOUBLE},
+      </if>
+      <if test="dayoff != null">
+        dayoff = #{dayoff,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dlt != null">
+        dlt = #{dlt,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getAllStuffSalary" resultMap="BaseResultMap">
+   select 
+    <include refid="Base_Column_List" />
+    from salary
+    where dlt=0
+  
+  </select>
+  
+</mapper>
