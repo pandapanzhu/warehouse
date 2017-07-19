@@ -69,12 +69,12 @@
 				
 				<td>
 					<a href="${basePath }rest/stuff/toSaveOrupdateStuff?id=${myList.id}" >查看</a>&nbsp;|&nbsp;
-					<a href="javascript:;" style="color:#D9534F" data-id="${myList.id}" onclick="QueryByid(this);">删除</a>&nbsp;|&nbsp;
+					<a href="javascript:;" class="dltStuff" style="color:#D9534F" data-id="${myList.id}">删除</a>&nbsp;|&nbsp;
 					<c:if test="${myList.status == 1}">
-					<button class="btn btn-info leaveButton">报道</button>
+					<button class="btn btn-info leaveButton" data-id="${myList.id}">报道</button>
 					</c:if> 
 					<c:if test="${myList.status == 0}">
-					<button class="btn btn-info workButton">离职</button>
+					<button class="btn btn-info workButton" data-id="${myList.id}">离职</button>
 					</c:if>
 				</td>
 			</tr>
@@ -98,6 +98,53 @@ $(function(){
 	var totalPage=${page.totalPage}
 	initPageHtml(pageNum, totalPage);
 	
+	$(".dltStuff").click(function(){
+		$.ajax({
+			url:'${basePath}rest/stuff/dltStuff',
+			data:{id:$(this).data("id")},
+			type:'post',
+			dataType:'json',
+			success:function(data){
+				var msg=data.msg;
+				if(msg=='success'){
+					parent.layer.msg('删除成功');
+					location.reload();
+				}else{
+					parent.layer.msg('删除失败');
+				}
+			}
+		})
+	})
+	
+	$(".leaveButton").click(function () {
+		var id=$(this).data("id");
+		var status=0;
+		leaveFunction(id,status);
+	});
+	$(".workButton").click(function () {
+		var id=$(this).data("id");
+		var status=1;
+		leaveFunction(id,status);
+	})
+	
+	function leaveFunction(id,status){
+		//var status=status*1//转化为数字
+		$.ajax({
+			url:'${basePath}rest/stuff/leaveStuff',
+			data:{id:id,status:status},
+			type:'post',
+			dataType:'json',
+			success:function(data){
+				var msg=data.msg;
+				if(msg=='success'){
+					parent.layer.msg('操作成功');
+					location.reload();
+				}else{
+					parent.layer.msg('操作失败');
+				}
+			}
+		})
+	}
 	
 })
 

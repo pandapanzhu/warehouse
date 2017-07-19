@@ -7,16 +7,10 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.druid.stat.TableStat.Mode;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.gson.JsonObject;
-import com.warehouse.javacode.domain.Salary;
 import com.warehouse.javacode.domain.Stuff;
 import com.warehouse.javacode.service.StuffService;
 import com.warehouse.javacode.util.PageUtil;
@@ -91,10 +85,28 @@ public class StuffController {
 	 */
 	@RequestMapping("stuff/leaveStuff")
 	@ResponseBody
-	public String stuffLeave(String id,String status){
+	public String stuffLeave(String id,int status){
 		JsonObject jsonObject=new JsonObject();
-		int i=stuffService.stuffleaveByStatus();
-		return "";
+		int i=stuffService.stuffleaveByStatus(id,status);
+		if(i==1){
+			jsonObject.addProperty("msg", "success");
+		}else{
+			jsonObject.addProperty("msg", "error");
+		}
+		return jsonObject.toString();
+	}
+	
+	@RequestMapping("stuff/dltStuff")
+	@ResponseBody
+	public String dltStuf(String id){
+		JsonObject jsonObject=new JsonObject();
+		int i=stuffService.dltStuffById(id);
+		if(i==1){
+			jsonObject.addProperty("msg", "success");
+		}else{
+			jsonObject.addProperty("msg", "error");
+		}
+		return jsonObject.toString();
 	}
 
 	/**
@@ -103,14 +115,17 @@ public class StuffController {
 	 * @param pageNum
 	 * @return
 	 */
-	@RequestMapping("doShowStuffSalary")
-	@ResponseBody
-	public PageInfo<Salary> doShowStuffSalary(int pageSize,int pageNum,@RequestParam("search")String search){
-		PageHelper.startPage(pageNum, pageSize);//分页开始
-		List<Salary> allSalary=stuffService.getAllStuffSalary(search);
-		PageInfo<Salary> pageInfo=new PageInfo<>();
-		pageInfo.setList(allSalary);
-		return pageInfo;
+	@RequestMapping("stuff/doShowStuffSalary")
+	public String doShowStuffSalary(String pageNum,String date,String search,Model model){
+		int pageNo=1;
+		if(StringUtils.isNotBlank(pageNum)){//如果不为空
+			pageNo=Integer.valueOf(pageNum);//将字符串转化为数字
+		}
+		List<Stuff> stuffs=stuffService.getAllStuff();//得到全部员工的信息，拼凑下拉列表
+		PageUtil salaryPage=stuffService.getStuffSalaryList(pageNo,pageSize,search,date);
+		model.addAttribute("stuffList", stuffs);
+		model.addAttribute("page", salaryPage);
+		return "stuff/showStuffSalary";
 	}
 	
 	/*	@RequestMapping("doShowStuff")

@@ -55,16 +55,17 @@ DROP TABLE IF EXISTS `salary`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `salary` (
   `id` varchar(45) NOT NULL,
-  `loginid` varchar(45) DEFAULT NULL,
-  `basesalary` double DEFAULT NULL COMMENT '基本工资',
-  `plus` varchar(255) DEFAULT NULL COMMENT '补助',
+  `stuffid` varchar(45) DEFAULT NULL,
+  `pluss` varchar(255) DEFAULT NULL COMMENT '加。。。格式为json',
+  `minuss` varchar(255) DEFAULT NULL COMMENT '减 --格式为json',
   `should` double DEFAULT NULL COMMENT '应发工资',
   `actual` double DEFAULT NULL COMMENT '实发工资',
   `dayoff` varchar(5) DEFAULT NULL COMMENT '请假天数',
+  `quantity` double DEFAULT NULL COMMENT '数量，完成的数量',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `dlt` int(11) DEFAULT NULL COMMENT '是否删除，0为正常，1为删除',
-  `quantity` double DEFAULT NULL COMMENT '数量，完成的数量',
-  `minus` varchar(255) DEFAULT NULL,
+  `year` int(4) DEFAULT NULL COMMENT '年份',
+  `month` int(2) DEFAULT NULL COMMENT '月份',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工资信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -108,7 +109,7 @@ CREATE TABLE `stuff` (
 
 LOCK TABLES `stuff` WRITE;
 /*!40000 ALTER TABLE `stuff` DISABLE KEYS */;
-INSERT INTO `stuff` VALUES ('0001','祝攀','18108190650','511323199411182519','四川省南充市嘉陵区陈寿路208号',3900.00,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-14 10:42:38'),('0002','陈小蝶','15181730317','51132319950101585X','四川省成都市',3900.01,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-18 09:32:17'),('17071816294779211390','test','18108190650','511323199411182519','12-101',2530.25,0,NULL,'大杂工',0,'2017-07-18 08:29:48','2017-07-18 09:47:19');
+INSERT INTO `stuff` VALUES ('0001','祝攀','18108190650','511323199411182519','四川省南充市嘉陵区陈寿路208号',3900.00,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-14 10:42:38'),('0002','陈小蝶','15181730317','51132319950101585X','四川省成都市',3900.01,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-18 09:32:17'),('17071816294779211390','test0','18108190650','511323199411182519','12-101',2530.25,0,NULL,'大杂工',0,'2017-07-18 08:29:48','2017-07-19 07:05:18');
 /*!40000 ALTER TABLE `stuff` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -121,4 +122,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-18 18:01:53
+-- Dump completed on 2017-07-19 18:59:33

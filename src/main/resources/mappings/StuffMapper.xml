@@ -169,5 +169,10 @@
   </if>
   </select>
   
+  <select id="getAllStuffList" resultMap="BaseResultMap">
+  select id,stuffname
+  from stuff
+  where dlt=0
+  </select>
   
 </mapper>

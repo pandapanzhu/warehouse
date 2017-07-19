@@ -7,9 +7,13 @@ import com.warehouse.javacode.domain.Stuff;
 import com.warehouse.javacode.util.PageUtil;
 
 public interface StuffService {
-	List<Salary> getAllStuffSalary(String search);
 	PageUtil getStuffList(String search, int pageNum, int pageSize);
 	int saveOrUpdateStuff(Stuff stuff);
 	Stuff getStuffById(String id);
-	int stuffleaveByStatus();//离职报道处理事件
+	int stuffleaveByStatus(String id, int status);//离职报道处理事件
+	int dltStuffById(String id);//删除操作，软删除
+	
+	List<Stuff> getAllStuff();
+	
+	PageUtil getStuffSalaryList(int pageNum, int pageSize, String search, String date);
 }

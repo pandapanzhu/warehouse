@@ -3,27 +3,27 @@ package com.warehouse.javacode.domain;
 public class Salary {
     private String id;
 
-    private String loginid;
+    private String stuffid;
 
-    private Double basesalary;//基本工资
-    
-    private Double quantity;//完成的数量
+    private String pluss;
 
-    private String plus;//加钱
-    
-    private String minus;//扣钱
+    private String minuss;
 
-    private Double should;//应发工资
+    private Double should;
 
-    private Double actual;//实发工资
+    private Double actual;
 
-    private String dayoff;//请假天数
+    private String dayoff;
 
-    private String remark;//备注
+    private Double quantity;
 
-    private Integer dlt;//删除标注
+    private String remark;
 
-    
+    private Integer dlt;
+
+    private Integer year;
+
+    private Integer month;
 
     public String getId() {
         return id;
@@ -33,20 +33,28 @@ public class Salary {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getLoginid() {
-        return loginid;
+    public String getStuffid() {
+        return stuffid;
     }
 
-    public void setLoginid(String loginid) {
-        this.loginid = loginid == null ? null : loginid.trim();
+    public void setStuffid(String stuffid) {
+        this.stuffid = stuffid == null ? null : stuffid.trim();
     }
 
-    public Double getBasesalary() {
-        return basesalary;
+    public String getPluss() {
+        return pluss;
     }
 
-    public void setBasesalary(Double basesalary) {
-        this.basesalary = basesalary;
+    public void setPluss(String pluss) {
+        this.pluss = pluss == null ? null : pluss.trim();
+    }
+
+    public String getMinuss() {
+        return minuss;
+    }
+
+    public void setMinuss(String minuss) {
+        this.minuss = minuss == null ? null : minuss.trim();
     }
 
     public Double getShould() {
@@ -73,6 +81,14 @@ public class Salary {
         this.dayoff = dayoff == null ? null : dayoff.trim();
     }
 
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -89,27 +105,19 @@ public class Salary {
         this.dlt = dlt;
     }
 
-    public Double getQuantity() {
-        return quantity;
+    public Integer getYear() {
+        return year;
     }
 
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
-	public String getPlus() {
-		return plus;
-	}
+    public Integer getMonth() {
+        return month;
+    }
 
-	public void setPlus(String plus) {
-		this.plus = plus;
-	}
-
-	public String getMinus() {
-		return minus;
-	}
-
-	public void setMinus(String minus) {
-		this.minus = minus;
-	}
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
 }

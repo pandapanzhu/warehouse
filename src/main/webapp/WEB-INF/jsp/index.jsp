@@ -49,7 +49,7 @@
 							</a>
 							<ul style="display: none">
 								<li><a href="${basePath }rest/stuff/toShowStuff"><span>O</span>员工信息总览</a></li>
-								<li><a href="${basePath }rest/page/toShowStuffSalary"><span>O</span>员工工资总览</a></li>
+								<li><a href="${basePath }rest/stuff/doShowStuffSalary"><span>O</span>员工工资总览</a></li>
 							</ul>
 							</li> 
 					  <%}// end if

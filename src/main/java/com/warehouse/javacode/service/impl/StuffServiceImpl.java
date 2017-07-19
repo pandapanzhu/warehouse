@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.warehouse.javacode.dao.SalaryMapper;
 import com.warehouse.javacode.dao.StuffMapper;
-import com.warehouse.javacode.domain.Salary;
 import com.warehouse.javacode.domain.Stuff;
 import com.warehouse.javacode.service.StuffService;
 import com.warehouse.javacode.util.PageUtil;
@@ -24,10 +23,10 @@ public class StuffServiceImpl implements StuffService{
 	@Resource
 	private StuffMapper stuffMapper;
 	
-	@Override
-	public List<Salary> getAllStuffSalary(String seaech) {
-		return salaryMapper.getAllStuffSalary();
-	}
+	/**
+	 * 薪水，按月计算。
+	 */
+
 	@Override
 	public PageUtil getStuffList(String search,int pageNum,int pageSize) {
 		int allRow=stuffMapper.getStuffCountBySearch(search);//总条数
@@ -57,9 +56,45 @@ public class StuffServiceImpl implements StuffService{
 		return stuff;
 	}
 	@Override
-	public int stuffleaveByStatus() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int stuffleaveByStatus(String id,int status) {
+		//根据Id查找对应的信息
+		Stuff stuff=stuffMapper.selectByPrimaryKey(id);
+		if(stuff==null){//没有找到该信息
+			return 0;
+		}else{
+			stuff.setStatus(status);
+			//更新了信息之后，再进行保存
+			int i=stuffMapper.updateByPrimaryKeySelective(stuff);
+			return i;
+		}
+		
+	}
+	@Override
+	public int dltStuffById(String id) {
+		Stuff stuff=stuffMapper.selectByPrimaryKey(id);
+		if(stuff==null){//没有找到该信息
+			return 0;
+		}else{
+			stuff.setDlt(1);
+			//更新了信息之后，再进行保存
+			int i=stuffMapper.updateByPrimaryKeySelective(stuff);
+			return i;
+		}
+	}
+	@Override
+	public List<Stuff> getAllStuff() {
+		return stuffMapper.getAllStuffList();
+	}
+	@Override
+	public PageUtil getStuffSalaryList(int pageNum, int pageSize, String search, String date) {
+		int year=1;
+		int month=1;
+		int allRow=salaryMapper.getSalaryCountBySearch(search,year,month);//总条数
+		int offset = PageUtil.countOffset(pageSize, pageNum); //当前页开始记录
+		List<Object> stuffList= salaryMapper.getAllStuffSalaryBySearch(search, year, month, offset, pageSize);
+		PageUtil pageUtil=new PageUtil(pageNum, pageSize, allRow);
+		pageUtil.setList(stuffList);
+		return pageUtil;
 	}
 
 	

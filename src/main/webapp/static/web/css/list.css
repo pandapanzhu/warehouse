@@ -15,4 +15,4 @@ body{background:#F8F8F8;}
 .QueryList td{text-align: center;font-size: 13px;}
 
 .pull-right{margin-right:3%;}
-.leaveButton{padding: 1px 4px;}
+.leaveButton , .workButton{padding: 1px 4px;}

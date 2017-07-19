@@ -20,4 +20,6 @@ public interface StuffMapper {
 
 	int getStuffCountBySearch(@Param("search")String search);
 
+	List<Stuff> getAllStuffList();//得到所有的员工信息，包括离职和未离职的
+
 }
