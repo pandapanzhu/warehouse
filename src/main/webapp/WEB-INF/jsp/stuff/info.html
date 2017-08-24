@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Info page</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<style type="text/css">
+		body{padding: 0;margin: 0;}
+		.info-list{margin-top: 20px; border: 1px solid #eee;}
+		.info-header{padding: 20px 30px;}
+		.info-header >label{line-height: 30px;}
+		.info-body{padding: 0;line-height: 30px;}
+		.item-group:after,.item-group section:after{clear: both;content: '';display: table}
+		.item-group p{padding: 0 20px;border: 1px solid #eee;border-left: none; border-right: none;     margin-bottom: -1px;}
+		.item-group p i{margin-top: 6px;cursor: pointer; font-size: 18px;}
+		.item-group section{padding-bottom: 30px;}
+		.item-group.active section{display: none;}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row info-list">
+			<!-- content start -->
+			<div class="col-md-12 info-header">
+				<label class="col-md-4"><b>姓名：</b><span>panda</span></label>
+				<label class="col-md-4"><b>职位：</b><span>panda</span></label>
+				<label class="col-md-4"><b>工资：</b><span>panda</span></label>
+				<label class="col-md-4"><b>应发：</b><span>panda</span></label>
+				<label class="col-md-4"><b>实发：</b><span>panda</span></label>
+				<label class="col-md-4"><b>结余：</b><span>panda</span></label>
+			</div>
+			<div class="col-md-12 info-body">
+				<div class="item-group">
+					<p class="btn-1">加<i class="glyphicon glyphicon-plus-sign pull-right"></i></p>
+					<section>
+						<div class="col-md-4"><label>事件</label></div>
+						<div class="col-md-4"><label>金额</label></div>
+						<div class="col-md-4"><label>操作</label></div>
+					</section>
+				</div>
+				<div class="item-group">
+					<p class="btn-1">减<i class="glyphicon glyphicon-plus-sign pull-right"></i></p>
+					<section>
+						<div class="col-md-4"><label>事件</label></div>
+						<div class="col-md-4"><label>金额</label></div>
+						<div class="col-md-4"><label>操作</label></div>
+					</section>
+				</div>
+			</div>
+			<!-- content end -->
+		</div>
+	</div>
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script>
+		$('.btn-1 i').on('click',function(){
+			var $this = $(this),
+			$parents = $this.parents('.item-group');
+			$parents.toggleClass('active');
+		});
+	</script>
+
+</body>
+</html>

@@ -100,12 +100,15 @@ public class StuffServiceImpl implements StuffService{
 		int allRow=salaryMapper.getSalaryCountBySearch(search,year,month);//总条数
 		int offset = PageUtil.countOffset(pageSize, pageNum); //当前页开始记录
 		List<Object> stuffList= salaryMapper.getAllStuffSalaryBySearch(search, year, month, offset, pageSize);
-		for(Object salary:stuffList){
-			JsonObject jsonObject=new JsonObject();
-			
-//			Gson gson=new Gson();
-//			JsonArray jsonArray=gson.
-		}
+		Gson gson=new Gson();
+		String jsonString=gson.toJson(stuffList);//将list转换为json对象
+		System.out.println(jsonString);
+//		Gson json1=gson.fromJson(jsonString, getClass());
+//		for(Object salary:stuffList){
+//			
+////			Gson gson=new Gson();
+////			JsonArray jsonArray=gson.
+//		}
 		
 		PageUtil pageUtil=new PageUtil(pageNum, pageSize, allRow);
 		pageUtil.setList(stuffList);

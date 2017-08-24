@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `wareapp` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `wareapp`;
--- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
 --
 -- Host: localhost    Database: wareapp
 -- ------------------------------------------------------
--- Server version	5.7.3-m13
+-- Server version	5.6.27-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -58,14 +56,14 @@ CREATE TABLE `salary` (
   `stuffid` varchar(45) DEFAULT NULL,
   `pluss` varchar(255) DEFAULT NULL COMMENT '加。。。格式为json',
   `minuss` varchar(255) DEFAULT NULL COMMENT '减 --格式为json',
-  `should` double DEFAULT NULL COMMENT '应发工资',
-  `actual` double DEFAULT NULL COMMENT '实发工资',
-  `dayoff` varchar(5) DEFAULT NULL COMMENT '请假天数',
-  `quantity` double DEFAULT NULL COMMENT '数量，完成的数量',
+  `should` decimal(20,2) DEFAULT '0.00' COMMENT '应发工资',
+  `actual` decimal(20,2) DEFAULT '0.00' COMMENT '实发工资',
+  `dayoff` varchar(5) DEFAULT '0' COMMENT '请假天数',
+  `quantity` decimal(20,2) DEFAULT '0.00' COMMENT '数量，完成的数量',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  `dlt` int(11) DEFAULT NULL COMMENT '是否删除，0为正常，1为删除',
-  `year` int(4) DEFAULT NULL COMMENT '年份',
-  `month` int(2) DEFAULT NULL COMMENT '月份',
+  `dlt` int(11) DEFAULT '0' COMMENT '是否删除，0为正常，1为删除',
+  `year` int(4) DEFAULT '0' COMMENT '年份',
+  `month` int(2) DEFAULT '0' COMMENT '月份',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工资信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -76,6 +74,7 @@ CREATE TABLE `salary` (
 
 LOCK TABLES `salary` WRITE;
 /*!40000 ALTER TABLE `salary` DISABLE KEYS */;
+INSERT INTO `salary` VALUES ('17082123150038415672','0002',NULL,NULL,3900.01,3900.01,'0',0.00,NULL,0,2017,8),('17082123160000911218','0001',NULL,NULL,3900.00,3900.00,'0',0.00,NULL,0,2017,8);
 /*!40000 ALTER TABLE `salary` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,7 +108,7 @@ CREATE TABLE `stuff` (
 
 LOCK TABLES `stuff` WRITE;
 /*!40000 ALTER TABLE `stuff` DISABLE KEYS */;
-INSERT INTO `stuff` VALUES ('0001','祝攀','18108190650','511323199411182519','四川省南充市嘉陵区陈寿路208号',3900.00,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-14 10:42:38'),('0002','陈小蝶','15181730317','51132319950101585X','四川省成都市',3900.01,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-18 09:32:17'),('17071816294779211390','test0','18108190650','511323199411182519','12-101',2530.25,0,NULL,'大杂工',0,'2017-07-18 08:29:48','2017-07-19 07:05:18');
+INSERT INTO `stuff` VALUES ('0001','祝攀','18108190650','511323199411182519','四川省南充市嘉陵区陈寿路208号',3900.00,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-14 10:42:38'),('0002','陈小蝶','15181730317','51132319950101585X','四川省成都市',3900.01,0,NULL,'consultant',0,'2017-07-14 10:37:09','2017-07-18 09:32:17'),('17071816294779211390','test0','18108190650','511323199411182519','12-101',2530.25,0,NULL,'大杂工',1,'2017-07-18 08:29:48','2017-08-01 14:40:43');
 /*!40000 ALTER TABLE `stuff` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -122,4 +121,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-19 18:59:33
+-- Dump completed on 2017-08-25  0:07:48
