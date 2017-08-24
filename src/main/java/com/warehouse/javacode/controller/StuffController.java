@@ -1,5 +1,6 @@
 package com.warehouse.javacode.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -96,6 +97,11 @@ public class StuffController {
 		return jsonObject.toString();
 	}
 	
+	/**
+	 * 删除员工
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("stuff/dltStuff")
 	@ResponseBody
 	public String dltStuf(String id){
@@ -117,12 +123,25 @@ public class StuffController {
 	 */
 	@RequestMapping("stuff/doShowStuffSalary")
 	public String doShowStuffSalary(String pageNum,String date,String search,Model model){
+		int year=2017;
+		int month=01;
+		if(StringUtils.isBlank(date)){
+			Calendar calendar=Calendar.getInstance();
+			month=calendar.get(Calendar.MONTH)+1;
+			year=calendar.get(Calendar.YEAR);
+		}else{
+			String[] newDate=date.split("-");
+			year=Integer.valueOf(newDate[0]);
+			month=Integer.valueOf(newDate[1]);
+		}
 		int pageNo=1;
 		if(StringUtils.isNotBlank(pageNum)){//如果不为空
 			pageNo=Integer.valueOf(pageNum);//将字符串转化为数字
 		}
 		List<Stuff> stuffs=stuffService.getAllStuff();//得到全部员工的信息，拼凑下拉列表
-		PageUtil salaryPage=stuffService.getStuffSalaryList(pageNo,pageSize,search,date);
+		PageUtil salaryPage=stuffService.getStuffSalaryList(pageNo,pageSize,search,year,month);
+		model.addAttribute("myYear", year);
+		model.addAttribute("myMonth", month);
 		model.addAttribute("stuffList", stuffs);
 		model.addAttribute("page", salaryPage);
 		return "stuff/showStuffSalary";

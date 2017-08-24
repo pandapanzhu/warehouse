@@ -1,22 +1,31 @@
 package com.warehouse.javacode.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.warehouse.javacode.dao.SalaryMapper;
 import com.warehouse.javacode.dao.StuffMapper;
+import com.warehouse.javacode.domain.Salary;
 import com.warehouse.javacode.domain.Stuff;
 import com.warehouse.javacode.service.StuffService;
 import com.warehouse.javacode.util.PageUtil;
+import com.warehouse.javacode.util.StampUtil;
 import com.warehouse.javacode.util.UUIDUtil;
 
 @Service
 public class StuffServiceImpl implements StuffService{
 
+	final static Logger logger=Logger.getLogger(StuffServiceImpl.class);
+	
 	@Resource
 	private SalaryMapper salaryMapper;
 	
@@ -86,16 +95,53 @@ public class StuffServiceImpl implements StuffService{
 		return stuffMapper.getAllStuffList();
 	}
 	@Override
-	public PageUtil getStuffSalaryList(int pageNum, int pageSize, String search, String date) {
-		int year=1;
-		int month=1;
+	public PageUtil getStuffSalaryList(int pageNum, int pageSize, String search,int year,int month) {
+		
 		int allRow=salaryMapper.getSalaryCountBySearch(search,year,month);//总条数
 		int offset = PageUtil.countOffset(pageSize, pageNum); //当前页开始记录
 		List<Object> stuffList= salaryMapper.getAllStuffSalaryBySearch(search, year, month, offset, pageSize);
+		for(Object salary:stuffList){
+			JsonObject jsonObject=new JsonObject();
+			
+//			Gson gson=new Gson();
+//			JsonArray jsonArray=gson.
+		}
+		
 		PageUtil pageUtil=new PageUtil(pageNum, pageSize, allRow);
 		pageUtil.setList(stuffList);
 		return pageUtil;
 	}
+
+	@Override
+	public List<Stuff> getStatusNormalStuff() {
+		List<Stuff> getNormalStuffs=stuffMapper.getNormalStuffList();
+		return getNormalStuffs;
+	}
+
+	@Override
+	public void createSalaryByMonth(List<Salary> salaries) {
+		for(Salary mySalary:salaries){
+			//检查这条记录是否存在，存在就跳过，不存在就添加
+			Salary checkSalary=salaryMapper.checkSalaryByIYM(mySalary.getStuffid(), mySalary.getYear(), mySalary.getMonth());
+			if(checkSalary==null){//如果为空的话，证明不存在，添加进去
+				int i=salaryMapper.insertSelective(mySalary);
+				if(i==1){//添加成功
+					logger.info("为"+mySalary.getId()+"添加成功,现在时间是："+(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date())  );
+					continue;
+				}else{//添加失败
+					logger.error("添加失败！salaryupdate");
+					StampUtil.sendEmailToUser("salaryupdate");
+					throw new RuntimeException("添加员工工资出错，将发送邮件给管理员，并进行事物回滚！"+(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date()));
+				}
+			}else{//存在，进入下一个循环
+				logger.info("ID为"+checkSalary.getId()+"已经存在，现在时间是："+(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date()) );
+				continue;
+			}
+		}//end for
+		
+	}
+	
+	
 
 	
 }

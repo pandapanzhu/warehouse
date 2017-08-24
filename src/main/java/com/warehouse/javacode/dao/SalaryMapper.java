@@ -18,5 +18,8 @@ public interface SalaryMapper {
 	List<Object> getAllStuffSalaryBySearch(@Param("search")String search, @Param("year")int year, @Param("month")int month, @Param("offset")int offSet, @Param("pageSize")int pageSize);
 
 	int getSalaryCountBySearch(@Param("search")String search, @Param("year")int year, @Param("month")int month);
+	
+	Salary checkSalaryByIYM(@Param("stuffid")String stuffid,@Param("year") Integer year, @Param("month")Integer month);
+
 
 }

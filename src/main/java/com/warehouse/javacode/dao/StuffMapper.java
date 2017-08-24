@@ -22,4 +22,6 @@ public interface StuffMapper {
 
 	List<Stuff> getAllStuffList();//得到所有的员工信息，包括离职和未离职的
 
+	List<Stuff> getNormalStuffList();
+
 }

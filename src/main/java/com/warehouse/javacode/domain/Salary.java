@@ -1,5 +1,7 @@
 package com.warehouse.javacode.domain;
 
+import java.math.BigDecimal;
+
 public class Salary {
     private String id;
 
@@ -9,13 +11,13 @@ public class Salary {
 
     private String minuss;
 
-    private Double should;
+    private BigDecimal should;
 
-    private Double actual;
+    private BigDecimal actual;
 
     private String dayoff;
 
-    private Double quantity;
+    private BigDecimal quantity;
 
     private String remark;
 
@@ -57,19 +59,19 @@ public class Salary {
         this.minuss = minuss == null ? null : minuss.trim();
     }
 
-    public Double getShould() {
+    public BigDecimal getShould() {
         return should;
     }
 
-    public void setShould(Double should) {
+    public void setShould(BigDecimal should) {
         this.should = should;
     }
 
-    public Double getActual() {
+    public BigDecimal getActual() {
         return actual;
     }
 
-    public void setActual(Double actual) {
+    public void setActual(BigDecimal actual) {
         this.actual = actual;
     }
 
@@ -81,11 +83,11 @@ public class Salary {
         this.dayoff = dayoff == null ? null : dayoff.trim();
     }
 
-    public Double getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 

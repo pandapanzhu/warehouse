@@ -15,5 +15,10 @@ public interface StuffService {
 	
 	List<Stuff> getAllStuff();
 	
-	PageUtil getStuffSalaryList(int pageNum, int pageSize, String search, String date);
+	PageUtil getStuffSalaryList(int pageNum, int pageSize, String search, int year,int month);
+	
+	List<Stuff> getStatusNormalStuff();
+	
+	//每个月增加员工的工资信息
+	void createSalaryByMonth(List<Salary> salaries);
 }
