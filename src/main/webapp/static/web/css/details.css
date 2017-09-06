@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+/*本CSS用户有分页的页面上，基于Bootstrap和Jquery，为分页页面提供布局*/
+.panel { margin-top: 40px; }
+.panel-heading { background: #F1F9F8 !important; color: #2EB8F9 !important; font-weight: bold; font-size: 14px;}
+	.icon {
+		background-color: #2EB8F9 !important;
+		border-radius: 50%;
+		width: 30px;
+		height: 30px;
+		border: none;
+	}
+	.glyphicon-th-large{
+	    background: #FFFFFF;
+	}
+	.myButton{
+		text-align: center;
+		margin-top: 20px;
+	}

@@ -1,5 +1,7 @@
 package com.warehouse.javacode.domain;
 
+import java.util.Date;
+
 public class Login {
     private String id;
 
@@ -14,6 +16,10 @@ public class Login {
     private String remark;
 
     private Integer dlt;
+
+    private Date createtime;
+
+    private Date updatetime;
 
     public String getId() {
         return id;
@@ -69,5 +75,21 @@ public class Login {
 
     public void setDlt(Integer dlt) {
         this.dlt = dlt;
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    public Date getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
     }
 }

@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.warehouse.javacode.dao.SalaryMapper">
-   <resultMap id="BaseResultMap" type="com.warehouse.javacode.domain.Salary" >
-	    <id column="id" property="id" jdbcType="VARCHAR" />
-	    <result column="stuffid" property="stuffid" jdbcType="VARCHAR" />
-	    <result column="pluss" property="pluss" jdbcType="VARCHAR" />
-	    <result column="minuss" property="minuss" jdbcType="VARCHAR" />
-	    <result column="should" property="should" jdbcType="DOUBLE" />
-	    <result column="actual" property="actual" jdbcType="DOUBLE" />
-	    <result column="dayoff" property="dayoff" jdbcType="VARCHAR" />
-	    <result column="quantity" property="quantity" jdbcType="DOUBLE" />
-	    <result column="remark" property="remark" jdbcType="VARCHAR" />
-	    <result column="dlt" property="dlt" jdbcType="INTEGER" />
-	    <result column="year" property="year" jdbcType="INTEGER" />
-	    <result column="month" property="month" jdbcType="INTEGER" />
+  <resultMap id="BaseResultMap" type="com.warehouse.javacode.domain.Salary">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="stuffid" jdbcType="VARCHAR" property="stuffid" />
+    <result column="should" jdbcType="DECIMAL" property="should" />
+    <result column="actual" jdbcType="DECIMAL" property="actual" />
+    <result column="dayoff" jdbcType="VARCHAR" property="dayoff" />
+    <result column="quantity" jdbcType="DECIMAL" property="quantity" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="dlt" jdbcType="INTEGER" property="dlt" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="shouldplus" jdbcType="DECIMAL" property="shouldplus" />
+    <result column="shouldminus" jdbcType="DECIMAL" property="shouldminus" />
   </resultMap>
+  <sql id="Base_Column_List">
+    id, stuffid, should, actual, dayoff, quantity, balance, remark, dlt, year, month, 
+    createtime, updatetime,shouldplus,shouldminus
+  </sql>
   <resultMap id="SalaryResultMap" extends="BaseResultMap" type="com.warehouse.javacode.domain.extend.StuffSalary">
   	<result column="stuffname" jdbcType="VARCHAR" property="stuffname"/>
   	<result column="basesalary" jdbcType="DOUBLE" property="basesalary"/>
   	<result column="position" jdbcType="VARCHAR" property="position"/>
   </resultMap>
   
-  <sql id="Base_Column_List" >
-    id, stuffid, pluss, minuss, should, actual, dayoff, quantity, remark, dlt, year, month
-  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -34,127 +38,156 @@
     delete from salary
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insertSelective" parameterType="com.warehouse.javacode.domain.Salary" >
+  <insert id="insertSelective" parameterType="com.warehouse.javacode.domain.Salary">
     insert into salary
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="stuffid != null" >
+      <if test="stuffid != null">
         stuffid,
       </if>
-      <if test="pluss != null" >
-        pluss,
-      </if>
-      <if test="minuss != null" >
-        minuss,
-      </if>
-      <if test="should != null" >
+      <if test="should != null">
         should,
       </if>
-      <if test="actual != null" >
+      <if test="actual != null">
         actual,
       </if>
-      <if test="dayoff != null" >
+      <if test="dayoff != null">
         dayoff,
       </if>
-      <if test="quantity != null" >
+      <if test="quantity != null">
         quantity,
       </if>
-      <if test="remark != null" >
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="remark != null">
         remark,
       </if>
-      <if test="dlt != null" >
+      <if test="dlt != null">
         dlt,
       </if>
-      <if test="year != null" >
+      <if test="year != null">
         year,
       </if>
-      <if test="month != null" >
+      <if test="month != null">
         month,
       </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="shouldplus != null">
+        shouldplus,
+      </if>
+      <if test="shouldminus != null">
+        shouldminus,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="stuffid != null" >
+      <if test="stuffid != null">
         #{stuffid,jdbcType=VARCHAR},
       </if>
-      <if test="pluss != null" >
-        #{pluss,jdbcType=VARCHAR},
+      <if test="should != null">
+        #{should,jdbcType=DECIMAL},
       </if>
-      <if test="minuss != null" >
-        #{minuss,jdbcType=VARCHAR},
+      <if test="actual != null">
+        #{actual,jdbcType=DECIMAL},
       </if>
-      <if test="should != null" >
-        #{should,jdbcType=DOUBLE},
-      </if>
-      <if test="actual != null" >
-        #{actual,jdbcType=DOUBLE},
-      </if>
-      <if test="dayoff != null" >
+      <if test="dayoff != null">
         #{dayoff,jdbcType=VARCHAR},
       </if>
-      <if test="quantity != null" >
-        #{quantity,jdbcType=DOUBLE},
+      <if test="quantity != null">
+        #{quantity,jdbcType=DECIMAL},
       </if>
-      <if test="remark != null" >
+      <if test="balance != null">
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="dlt != null" >
+      <if test="dlt != null">
         #{dlt,jdbcType=INTEGER},
       </if>
-      <if test="year != null" >
+      <if test="year != null">
         #{year,jdbcType=INTEGER},
       </if>
-      <if test="month != null" >
+      <if test="month != null">
         #{month,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shouldplus != null">
+        #{shouldplus,jdbcType=DECIMAL},
+      </if>
+      <if test="shouldminus != null">
+        #{shouldminus,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.warehouse.javacode.domain.Salary" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.warehouse.javacode.domain.Salary">
     update salary
-    <set >
-      <if test="stuffid != null" >
+    <set>
+      <if test="stuffid != null">
         stuffid = #{stuffid,jdbcType=VARCHAR},
       </if>
-      <if test="pluss != null" >
-        pluss = #{pluss,jdbcType=VARCHAR},
+      <if test="should != null">
+        should = #{should,jdbcType=DECIMAL},
       </if>
-      <if test="minuss != null" >
-        minuss = #{minuss,jdbcType=VARCHAR},
+      <if test="actual != null">
+        actual = #{actual,jdbcType=DECIMAL},
       </if>
-      <if test="should != null" >
-        should = #{should,jdbcType=DOUBLE},
-      </if>
-      <if test="actual != null" >
-        actual = #{actual,jdbcType=DOUBLE},
-      </if>
-      <if test="dayoff != null" >
+      <if test="dayoff != null">
         dayoff = #{dayoff,jdbcType=VARCHAR},
       </if>
-      <if test="quantity != null" >
-        quantity = #{quantity,jdbcType=DOUBLE},
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=DECIMAL},
       </if>
-      <if test="remark != null" >
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="dlt != null" >
+      <if test="dlt != null">
         dlt = #{dlt,jdbcType=INTEGER},
       </if>
-      <if test="year != null" >
+      <if test="year != null">
         year = #{year,jdbcType=INTEGER},
       </if>
-      <if test="month != null" >
+      <if test="month != null">
         month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shouldplus != null">
+        shouldplus = #{shouldplus,jdbcType=DECIMAL},
+      </if>
+      <if test="shouldminus != null">
+        shouldminus = #{shouldminus,jdbcType=DECIMAL},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   
   <select id="getAllStuffSalaryBySearch" resultMap="SalaryResultMap">
-   select salary.id,salary.should,salary.actual,salary.dayoff,salary.quantity,
+   select 
+    should, actual, dayoff, quantity, balance, salary.remark, year, month, shouldplus,shouldminus,
+    salary.createtime, salary.updatetime, salary.dlt, salary.id,salary.stuffid,
    stuff.stuffname,stuff.basesalary,stuff.position
     from salary,stuff
     where salary.dlt=0 and stuff.id=salary.stuffid
@@ -184,13 +217,12 @@
     and salary.month=#{month,jdbcType=INTEGER}
     </if>
   	<if test="search != null and search != '' ">
-    and stuff.id=#{search,jdbcType=INTEGER}
+    and stuff.id=#{search,jdbcType=VARCHAR}
     </if>
  </select>
  
   <select id="checkSalaryByIYM" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+    select *
     from salary
   	where stuffid=#{stuffid,jdbcType=VARCHAR}
   	and year=#{year,jdbcType=INTEGER}
@@ -198,4 +230,22 @@
   	and dlt=0
   </select>
   
+  <select id="getSalaryDetailById" resultMap="SalaryResultMap">
+   select 
+    should, actual, dayoff, quantity, balance, salary.remark, year, month, shouldplus,shouldminus,
+    salary.createtime, salary.updatetime, salary.dlt, salary.id,salary.stuffid,
+   stuff.stuffname,stuff.basesalary,stuff.position
+    from salary,stuff
+    where salary.dlt=0 and stuff.id=salary.stuffid
+    and salary.id=#{id,jdbcType=VARCHAR}
+    
+    </select>
+    
+    <select id="getSalaryByYearAndMonth" resultMap="SalaryResultMap">
+    select *
+    from salary
+    where year=#{year,jdbcType=INTEGER}
+  	and month=#{month,jdbcType=INTEGER}
+  	and dlt=0
+    </select>
 </mapper>

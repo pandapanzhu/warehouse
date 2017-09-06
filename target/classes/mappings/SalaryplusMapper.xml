@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warehouse.javacode.dao.SalaryplusMapper">
+  <resultMap id="BaseResultMap" type="com.warehouse.javacode.domain.Salaryplus">
+    <id column="plusid" jdbcType="VARCHAR" property="plusid" />
+    <result column="salaryid" jdbcType="VARCHAR" property="salaryid" />
+    <result column="plusname" jdbcType="VARCHAR" property="plusname" />
+    <result column="plusmoney" jdbcType="DECIMAL" property="plusmoney" />
+    <result column="dlt" jdbcType="INTEGER" property="dlt" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    plusid, salaryid, plusname, plusmoney, dlt, createtime, updatetime,remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from salaryplus
+    where plusid = #{plusid,jdbcType=VARCHAR} and dlt=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from salaryplus
+    where plusid = #{plusid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.warehouse.javacode.domain.Salaryplus">
+    insert into salaryplus
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="plusid != null">
+        plusid,
+      </if>
+      <if test="salaryid != null">
+        salaryid,
+      </if>
+      <if test="plusname != null">
+        plusname,
+      </if>
+      <if test="plusmoney != null">
+        plusmoney,
+      </if>
+      <if test="dlt != null">
+        dlt,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="plusid != null">
+        #{plusid,jdbcType=VARCHAR},
+      </if>
+      <if test="salaryid != null">
+        #{salaryid,jdbcType=VARCHAR},
+      </if>
+      <if test="plusname != null">
+        #{plusname,jdbcType=VARCHAR},
+      </if>
+      <if test="plusmoney != null">
+        #{plusmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="dlt != null">
+        #{dlt,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.warehouse.javacode.domain.Salaryplus">
+    update salaryplus
+    <set>
+      <if test="salaryid != null">
+        salaryid = #{salaryid,jdbcType=VARCHAR},
+      </if>
+      <if test="plusname != null">
+        plusname = #{plusname,jdbcType=VARCHAR},
+      </if>
+      <if test="plusmoney != null">
+        plusmoney = #{plusmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="dlt != null">
+        dlt = #{dlt,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where plusid = #{plusid,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getSalaryPlusBySalaryId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select 
+    <include refid="Base_Column_List" />
+    from salaryplus
+    where salaryid = #{id,jdbcType=VARCHAR} and dlt=0
+  </select>
+  
+  <update id="deletePlusById" parameterType="java.lang.String">
+  update salaryplus set dlt=1 where plusid = #{plusid,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

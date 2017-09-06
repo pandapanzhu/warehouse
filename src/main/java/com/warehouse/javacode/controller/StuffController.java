@@ -1,5 +1,7 @@
 package com.warehouse.javacode.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -12,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonObject;
+import com.warehouse.javacode.domain.Salary;
+import com.warehouse.javacode.domain.Salaryminus;
+import com.warehouse.javacode.domain.Salaryplus;
 import com.warehouse.javacode.domain.Stuff;
+import com.warehouse.javacode.domain.extend.StuffSalary;
 import com.warehouse.javacode.service.StuffService;
 import com.warehouse.javacode.util.PageUtil;
 
@@ -147,11 +153,92 @@ public class StuffController {
 		return "stuff/showStuffSalary";
 	}
 	
-	/*	@RequestMapping("doShowStuff")
-	@ResponseBody
-	public PageInfo<T> doShowStuff(int pageSize,int pageNum){
-		PageHelper.startPage(pageNum, pageSize);//分页开始
-		
-	}*/
+	@RequestMapping("stuff/toSaveOrupdateStuffSalary")
+	public String doShowStuffSalaryDetail(String id,Model model){
+		//根据工资条的ID，获得一条工资的详细信息，不包括奖金和扣除的信息
+		StuffSalary salaryDetail=stuffService.getStuffSalaryDetail(id);
+		//根据ID，获得奖金的信息
+		List<Salaryplus> plusDetail=stuffService.getSalaryPlusBySalaryId(id);
+		DateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			for(Salaryplus plus:plusDetail){
+				String dateString=sDateFormat.format(plus.getUpdatetime());
+				plus.setRemark(dateString);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		//根据Id,获得扣除的信息
+		List<Salaryminus> minusDetail=stuffService.getSalartMinusBySalaryId(id);
+		try {
+			for(Salaryminus minus:minusDetail){
+				String dateString=sDateFormat.format(minus.getUpdatetime());
+				minus.setRemark(dateString);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("detail", salaryDetail);//工资及员工信息
+		model.addAttribute("plusDetail", plusDetail);//奖金信息
+		model.addAttribute("minusDetail",minusDetail);
+		return "stuff/showStuffSalaryDetail";
+	}
 	
+	/**
+	 * 删除奖金和扣钱的事件
+	 */
+	@RequestMapping("stuff/deleteEventById")
+	@ResponseBody
+	public String deleteEventById(String id,int type){
+		JsonObject jsonObject=new JsonObject();
+		int i=0;
+		if (type==1) {//删除添加的事件
+			i=stuffService.deleteSalaryPlusById(id);
+		}else if(type==2){//删除扣除的事件
+			i=stuffService.deleteSalaryMinusById(id);
+		}
+		if(i==0){
+			jsonObject.addProperty("msg", "error");
+		}else if(i==1){
+			jsonObject.addProperty("msg", "success");
+		}else {
+			jsonObject.addProperty("msg", "wrong");
+		}
+		return jsonObject.toString();
+	}
+	
+	@RequestMapping("stuff/addEvent")
+	@ResponseBody
+	public String addEvent(String type,String eventName,String eventMoney,String userId){
+		JsonObject jsonObject=new JsonObject();
+		int i=0;
+		if(StringUtils.equals(type, "1")){
+			i=stuffService.addPlusEvent(eventName,eventMoney,userId);
+		}else if(StringUtils.equals(type, "2")){
+			i=stuffService.addMinusEvent(eventName,eventMoney,userId);
+		}else{
+			jsonObject.addProperty("msg", "error");
+		}
+		if(i==1){
+			jsonObject.addProperty("msg", "success");
+		}else{
+			jsonObject.addProperty("msg", "error");
+		}
+		return jsonObject.toString();
+	}
+	
+	@RequestMapping("stuff/updateSalaryDetail")
+	@ResponseBody
+	public String updateSalaryDetail(Salary salary,String basesalary){
+		JsonObject jsonObject=new JsonObject();
+		int i=stuffService.updateSalaryByDayOff(salary,basesalary);
+		if(i==1){
+			jsonObject.addProperty("msg", "success");
+		}else{
+			jsonObject.addProperty("msg", "error");
+		}
+		return jsonObject.toString();
+		
+	}
 }

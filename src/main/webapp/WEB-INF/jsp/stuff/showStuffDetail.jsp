@@ -6,34 +6,11 @@
 	<title>员工详情页面</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="${basePath }static/web/css/details.css">
 	<link rel="stylesheet" href="${basePath }static/web/css/base.css">
 	<link rel="stylesheet" href="${basePath }static/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${basePath }static/bootstrap/css/bootstrap-theme.min.css">
-	<style type="text/css">
-	.panel {
-		margin-top: 40px;
-	}
-	.panel-heading {
-		background: #F1F9F8 !important;
-		color: #2EB8F9 !important;
-		font-weight: bold;
-		font-size: 14px;
-	}
-	.icon {
-		background-color: #2EB8F9 !important;
-		border-radius: 50%;
-		width: 30px;
-		height: 30px;
-		border: none;
-	}
-	.glyphicon-th-large{
-	    background: #FFFFFF;
-	}
-	.myButton{
-		text-align: center;
-		margin-top: 20px;
-	}
-	</style>
+	
 </head>
 <body>
 <div class="container">

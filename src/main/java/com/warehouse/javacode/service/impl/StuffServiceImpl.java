@@ -1,5 +1,7 @@
 package com.warehouse.javacode.service.impl;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,13 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.warehouse.javacode.dao.SalaryMapper;
+import com.warehouse.javacode.dao.SalaryminusMapper;
+import com.warehouse.javacode.dao.SalaryplusMapper;
 import com.warehouse.javacode.dao.StuffMapper;
 import com.warehouse.javacode.domain.Salary;
+import com.warehouse.javacode.domain.Salaryminus;
+import com.warehouse.javacode.domain.Salaryplus;
 import com.warehouse.javacode.domain.Stuff;
+import com.warehouse.javacode.domain.extend.StuffSalary;
 import com.warehouse.javacode.service.StuffService;
 import com.warehouse.javacode.util.PageUtil;
 import com.warehouse.javacode.util.StampUtil;
@@ -31,6 +35,12 @@ public class StuffServiceImpl implements StuffService{
 	
 	@Resource
 	private StuffMapper stuffMapper;
+	
+	@Resource
+	private SalaryplusMapper salaryplusMapper;
+	
+	@Resource
+	private SalaryminusMapper salaryminusMapper;
 	
 	/**
 	 * 薪水，按月计算。
@@ -52,8 +62,25 @@ public class StuffServiceImpl implements StuffService{
 		if(StringUtils.isNotBlank(stuff.getId())){//如果Id不为空，则证明其是修改，否则就为添加
 			i=stuffMapper.updateByPrimaryKeySelective(stuff);
 		}else{
+			//添加员工信息的同时，初始化员工的工资信息
 			stuff.setId(UUIDUtil.getUUID());
 			i=stuffMapper.insertSelective(stuff);
+			if(i==1){
+				Salary salary=new Salary();
+				salary.setStuffid(stuff.getId());
+				salary.setId(UUIDUtil.getUUID());
+				salary.setShould(stuff.getBasesalary());
+				Calendar calendar=Calendar.getInstance();
+				salary.setYear(calendar.get(Calendar.YEAR));
+				salary.setMonth(calendar.get(Calendar.MONTH)+1);
+				int j=salaryMapper.updateByPrimaryKeySelective(salary);
+				if(j==1){
+					i=j;
+				}else{
+					throw new RuntimeException("添加员工时，初始化工资信息失败");
+				}
+				
+			}
 		}
 		return i;
 	}
@@ -100,16 +127,6 @@ public class StuffServiceImpl implements StuffService{
 		int allRow=salaryMapper.getSalaryCountBySearch(search,year,month);//总条数
 		int offset = PageUtil.countOffset(pageSize, pageNum); //当前页开始记录
 		List<Object> stuffList= salaryMapper.getAllStuffSalaryBySearch(search, year, month, offset, pageSize);
-		Gson gson=new Gson();
-		String jsonString=gson.toJson(stuffList);//将list转换为json对象
-		System.out.println(jsonString);
-//		Gson json1=gson.fromJson(jsonString, getClass());
-//		for(Object salary:stuffList){
-//			
-////			Gson gson=new Gson();
-////			JsonArray jsonArray=gson.
-//		}
-		
 		PageUtil pageUtil=new PageUtil(pageNum, pageSize, allRow);
 		pageUtil.setList(stuffList);
 		return pageUtil;
@@ -143,8 +160,115 @@ public class StuffServiceImpl implements StuffService{
 		}//end for
 		
 	}
+
+	@Override
+	public StuffSalary getStuffSalaryDetail(String id) {
+		//根据工资ID获得工资详细信息,没有包括奖金和扣除的信息
+		StuffSalary salaryDetail= salaryMapper.getSalaryDetailById(id);
+		return salaryDetail;
+	}
+
+	@Override
+	public List<Salaryplus> getSalaryPlusBySalaryId(String id) {
+		
+		List<Salaryplus> salaryplus=salaryplusMapper.getSalaryPlusBySalaryId(id);		
+		return salaryplus;
+	}
+
+	@Override
+	public List<Salaryminus> getSalartMinusBySalaryId(String id) {
+		List<Salaryminus> salaryminus= salaryminusMapper.getSalaryMinusBySalaryId(id);
+		
+		return salaryminus;
+	}
+
+	@Override
+	public int deleteSalaryPlusById(String id) {
+		int i=salaryplusMapper.deletePlusById(id);
+		return i;
+	}
+
+	@Override
+	public int deleteSalaryMinusById(String id) {
+		int i=salaryminusMapper.deleteMinusById(id);
+		return i;
+	}
+
+	@Override
+	public int addPlusEvent(String eventName, String eventMoney,String userId) {
+		BigDecimal plusDecimal=new BigDecimal(eventMoney);
+		Salary salary=salaryMapper.selectByPrimaryKey(userId);
+		salary.setShouldplus(salary.getShouldplus().add(plusDecimal));
+		salary.setShould(salary.getShould().add(salary.getShouldplus()).subtract(salary.getShouldminus()));
+		int j=salaryMapper.updateByPrimaryKeySelective(salary);
+		int i=0;
+		if(j==1){
+			Salaryplus salaryplus=new Salaryplus();
+			salaryplus.setPlusid(UUIDUtil.getUUID());
+			salaryplus.setPlusmoney(plusDecimal);
+			salaryplus.setPlusname(eventName);
+			salaryplus.setSalaryid(userId);
+			i=salaryplusMapper.insertSelective(salaryplus);
+			if(i==0){
+				throw new RuntimeException("添加奖金失败了");
+			}
+		}
+		return i;
+	}
+
+	@Override
+	public int addMinusEvent(String eventName, String eventMoney,String userId) {
+		BigDecimal minusDecimal=new BigDecimal(eventMoney);
+		Salary salary=salaryMapper.selectByPrimaryKey(userId);
+		salary.setShouldminus(salary.getShouldminus().add(minusDecimal));
+		salary.setShould(salary.getShould().add(salary.getShouldplus()).subtract(salary.getShouldminus()));
+		int j=salaryMapper.updateByPrimaryKeySelective(salary);
+		int i=0;
+		if(j==1){
+			Salaryminus salaryminus=new Salaryminus();
+			salaryminus.setMinusid(UUIDUtil.getUUID());
+			salaryminus.setMinusname(eventName);
+			salaryminus.setMinusmoney(minusDecimal);
+			salaryminus.setSalaryid(userId);
+			i=salaryminusMapper.insertSelective(salaryminus);
+			if (i==0) throw new RuntimeException("添加扣除失败");
+		}
+		return i;
+	}
+
+	@Override
+	public List<Salary> getSalaryByYearAndMonth(int year, int month) {
+		return salaryMapper.getSalaryByYearAndMonth(year,month);
+	}
+
+	@Override
+	public int updateSalary(Salary salary) {
+
+		return salaryMapper.updateByPrimaryKeySelective(salary);
+	}
 	
+	@Override
+	public int updateSalaryByDayOff(Salary salary,String baseSalary){
+		BigDecimal basesalary=new BigDecimal(baseSalary);
+		//请假天数的算法
+		BigDecimal dayMinus=getDayOffMinusBaseSalary(salary.getDayoff(),basesalary);
+		Salary salaryDetail=salaryMapper.selectByPrimaryKey(salary.getId());
+		salary.setShould(salaryDetail.getShould().subtract(dayMinus));
+		//应发-实发=结余
+		salary.setBalance(salary.getShould().subtract(salary.getActual()));
+		
+		int i=salaryMapper.updateByPrimaryKeySelective(salary);
+		return i;
+		
+	}
 	
+	/*
+	 * 一个月按30天算，请假一天扣除基本工资的30分之一，保留两位小数，四舍五入
+	 */
+	public BigDecimal getDayOffMinusBaseSalary(BigDecimal dayoff,BigDecimal baseSalary){
+		BigDecimal returnSalary=baseSalary.multiply(dayoff).divide(new BigDecimal(30),2,BigDecimal.ROUND_HALF_DOWN);
+		return returnSalary;
+	}
 
 	
 }

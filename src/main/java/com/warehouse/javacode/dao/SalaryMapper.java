@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.warehouse.javacode.domain.Salary;
+import com.warehouse.javacode.domain.extend.StuffSalary;
 
 public interface SalaryMapper {
     int deleteByPrimaryKey(String id);
@@ -21,5 +22,8 @@ public interface SalaryMapper {
 	
 	Salary checkSalaryByIYM(@Param("stuffid")String stuffid,@Param("year") Integer year, @Param("month")Integer month);
 
+	StuffSalary getSalaryDetailById(String id);
+
+	List<Salary> getSalaryByYearAndMonth(@Param("year")int year, @Param("month")int month);
 
 }

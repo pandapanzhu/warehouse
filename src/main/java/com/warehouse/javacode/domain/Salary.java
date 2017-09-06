@@ -1,23 +1,22 @@
 package com.warehouse.javacode.domain;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Salary {
     private String id;
 
     private String stuffid;
 
-    private String pluss;
-
-    private String minuss;
-
     private BigDecimal should;
 
     private BigDecimal actual;
 
-    private String dayoff;
+    private BigDecimal dayoff;
 
     private BigDecimal quantity;
+
+    private BigDecimal balance;
 
     private String remark;
 
@@ -26,6 +25,14 @@ public class Salary {
     private Integer year;
 
     private Integer month;
+
+    private Date createtime;
+
+    private Date updatetime;
+    
+    private BigDecimal shouldplus;
+    
+    private BigDecimal shouldminus;
 
     public String getId() {
         return id;
@@ -41,22 +48,6 @@ public class Salary {
 
     public void setStuffid(String stuffid) {
         this.stuffid = stuffid == null ? null : stuffid.trim();
-    }
-
-    public String getPluss() {
-        return pluss;
-    }
-
-    public void setPluss(String pluss) {
-        this.pluss = pluss == null ? null : pluss.trim();
-    }
-
-    public String getMinuss() {
-        return minuss;
-    }
-
-    public void setMinuss(String minuss) {
-        this.minuss = minuss == null ? null : minuss.trim();
     }
 
     public BigDecimal getShould() {
@@ -75,12 +66,12 @@ public class Salary {
         this.actual = actual;
     }
 
-    public String getDayoff() {
+    public BigDecimal getDayoff() {
         return dayoff;
     }
 
-    public void setDayoff(String dayoff) {
-        this.dayoff = dayoff == null ? null : dayoff.trim();
+    public void setDayoff(BigDecimal dayoff) {
+        this.dayoff = dayoff;
     }
 
     public BigDecimal getQuantity() {
@@ -89,6 +80,14 @@ public class Salary {
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public String getRemark() {
@@ -122,4 +121,36 @@ public class Salary {
     public void setMonth(Integer month) {
         this.month = month;
     }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    public Date getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
+    }
+
+	public BigDecimal getShouldplus() {
+		return shouldplus;
+	}
+
+	public void setShouldplus(BigDecimal shouldplus) {
+		this.shouldplus = shouldplus;
+	}
+
+	public BigDecimal getShouldminus() {
+		return shouldminus;
+	}
+
+	public void setShouldminus(BigDecimal shouldminus) {
+		this.shouldminus = shouldminus;
+	}
 }

@@ -9,19 +9,21 @@
     <result column="role" jdbcType="INTEGER" property="role" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="dlt" jdbcType="INTEGER" property="dlt" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, loginname, password, nickname, role, remark, dlt
+    id, loginname, password, nickname, role, remark, dlt, createtime, updatetime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from login
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR} and dlt=0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from login
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR} 
   </delete>
 
   <insert id="insertSelective" parameterType="com.warehouse.javacode.domain.Login">
@@ -48,6 +50,12 @@
       <if test="dlt != null">
         dlt,
       </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -71,6 +79,12 @@
       <if test="dlt != null">
         #{dlt,jdbcType=INTEGER},
       </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.warehouse.javacode.domain.Login">
@@ -93,6 +107,12 @@
       </if>
       <if test="dlt != null">
         dlt = #{dlt,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}

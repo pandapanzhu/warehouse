@@ -39,7 +39,7 @@
 				<span>日期：</span>
 			</div>
 			<div class="dateSearch">
-				<input class="form-control datetimepicker" name="date" id="dateValue" readonly value="${myYear}- ${myMonth}">
+				<input class="form-control datetimepicker" name="date" id="dateValue" readonly value="${myYear}-${myMonth}">
 			</div>
 			<div>
 				<button type="submit" class="btn" id="query_btn">搜索</button>
@@ -74,8 +74,8 @@
 				<td>${myList.stuffname}</td>
 				<td>${myList.position}</td>
 				<td>${myList.basesalary}</td>
-				<td>${myList.shoulplus}</td>
-				<td>${myList.shoulminus}</td>
+				<td>${myList.shouldplus}</td>
+				<td>${myList.shouldminus}</td>
 				<td>${myList.should }
 				<td>${myList.actual }
 				<td>
