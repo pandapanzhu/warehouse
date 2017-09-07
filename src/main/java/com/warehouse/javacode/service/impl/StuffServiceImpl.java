@@ -184,13 +184,45 @@ public class StuffServiceImpl implements StuffService{
 
 	@Override
 	public int deleteSalaryPlusById(String id) {
-		int i=salaryplusMapper.deletePlusById(id);
+		//通过ID，获得minus这一条信息
+		Salaryplus salaryplus=salaryplusMapper.selectByPrimaryKey(id);
+		String salaryId=salaryplus.getSalaryid();
+		//再根据这条记录的价格，更新salary的价格
+		BigDecimal plusDecimal=salaryplus.getPlusmoney();
+		Salary salary=salaryMapper.selectByPrimaryKey(salaryId);
+		salary.setShouldplus(salary.getShouldplus().subtract(plusDecimal));
+		salary.setShould(salary.getShould().subtract(plusDecimal));
+		salary.setBalance(salary.getShould().subtract(salary.getActual()));
+		int j=salaryMapper.updateByPrimaryKeySelective(salary);
+		int i=0;
+		if(j==1){
+			i=salaryplusMapper.deletePlusById(id);
+			if(i==0){
+				throw new RuntimeException("删除奖金失败了");
+			}
+		}
 		return i;
 	}
 
 	@Override
 	public int deleteSalaryMinusById(String id) {
-		int i=salaryminusMapper.deleteMinusById(id);
+		//通过ID，获得minus这一条信息
+		Salaryminus salaryminus=salaryminusMapper.selectByPrimaryKey(id);
+		String salaryId=salaryminus.getSalaryid();
+		//再根据这条记录的价格，更新salary的价格
+		BigDecimal minusDecimal=salaryminus.getMinusmoney();
+		Salary salary=salaryMapper.selectByPrimaryKey(salaryId);
+		salary.setShouldminus(salary.getShouldminus().subtract(minusDecimal));
+		salary.setShould(salary.getShould().add(minusDecimal));
+		salary.setBalance(salary.getShould().subtract(salary.getActual()));
+		int j=salaryMapper.updateByPrimaryKeySelective(salary);
+		int i=0;
+		if(j==1){
+			i=salaryminusMapper.deleteMinusById(id);
+			if(i==0){
+				throw new RuntimeException("删除扣除失败了");
+			}
+		}
 		return i;
 	}
 
@@ -199,7 +231,8 @@ public class StuffServiceImpl implements StuffService{
 		BigDecimal plusDecimal=new BigDecimal(eventMoney);
 		Salary salary=salaryMapper.selectByPrimaryKey(userId);
 		salary.setShouldplus(salary.getShouldplus().add(plusDecimal));
-		salary.setShould(salary.getShould().add(salary.getShouldplus()).subtract(salary.getShouldminus()));
+		salary.setShould(salary.getShould().add(salary.getShouldplus()));
+		salary.setBalance(salary.getShould().subtract(salary.getActual()));
 		int j=salaryMapper.updateByPrimaryKeySelective(salary);
 		int i=0;
 		if(j==1){
@@ -221,7 +254,10 @@ public class StuffServiceImpl implements StuffService{
 		BigDecimal minusDecimal=new BigDecimal(eventMoney);
 		Salary salary=salaryMapper.selectByPrimaryKey(userId);
 		salary.setShouldminus(salary.getShouldminus().add(minusDecimal));
-		salary.setShould(salary.getShould().add(salary.getShouldplus()).subtract(salary.getShouldminus()));
+		//当添加扣除事件时，should时指以前事件的总和，不再需要再加一次shouldPlus
+//		salary.setShould(salary.getShould().add(salary.getShouldplus()).subtract(salary.getShouldminus()));
+		salary.setShould(salary.getShould().subtract(salary.getShouldminus()));
+		salary.setBalance(salary.getShould().subtract(salary.getActual()));
 		int j=salaryMapper.updateByPrimaryKeySelective(salary);
 		int i=0;
 		if(j==1){
@@ -250,13 +286,13 @@ public class StuffServiceImpl implements StuffService{
 	@Override
 	public int updateSalaryByDayOff(Salary salary,String baseSalary){
 		BigDecimal basesalary=new BigDecimal(baseSalary);
-		//请假天数的算法
+		//请假天数的算法,返回值应该为请假后的基本工资,
 		BigDecimal dayMinus=getDayOffMinusBaseSalary(salary.getDayoff(),basesalary);
 		Salary salaryDetail=salaryMapper.selectByPrimaryKey(salary.getId());
-		salary.setShould(salaryDetail.getShould().subtract(dayMinus));
-		//应发-实发=结余
+		//基本工资加上奖励和扣除，就是应发工资
+		salary.setShould(dayMinus.add(salaryDetail.getShouldplus()).subtract(salaryDetail.getShouldminus()));
+		//应发-实发=结余,应发=基本工资+请假扣除的基本工资
 		salary.setBalance(salary.getShould().subtract(salary.getActual()));
-		
 		int i=salaryMapper.updateByPrimaryKeySelective(salary);
 		return i;
 		
@@ -266,7 +302,7 @@ public class StuffServiceImpl implements StuffService{
 	 * 一个月按30天算，请假一天扣除基本工资的30分之一，保留两位小数，四舍五入
 	 */
 	public BigDecimal getDayOffMinusBaseSalary(BigDecimal dayoff,BigDecimal baseSalary){
-		BigDecimal returnSalary=baseSalary.multiply(dayoff).divide(new BigDecimal(30),2,BigDecimal.ROUND_HALF_DOWN);
+		BigDecimal returnSalary=baseSalary.multiply(new BigDecimal(30).subtract(dayoff)).divide(new BigDecimal(30),2,BigDecimal.ROUND_HALF_DOWN);
 		return returnSalary;
 	}
 

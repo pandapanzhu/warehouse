@@ -17,10 +17,11 @@
     <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="shouldplus" jdbcType="DECIMAL" property="shouldplus" />
     <result column="shouldminus" jdbcType="DECIMAL" property="shouldminus" />
+    <result column="history" jdbcType="DECIMAL" property="history" />
   </resultMap>
   <sql id="Base_Column_List">
     id, stuffid, should, actual, dayoff, quantity, balance, remark, dlt, year, month, 
-    createtime, updatetime,shouldplus,shouldminus
+    createtime, updatetime,shouldplus,shouldminus,history
   </sql>
   <resultMap id="SalaryResultMap" extends="BaseResultMap" type="com.warehouse.javacode.domain.extend.StuffSalary">
   	<result column="stuffname" jdbcType="VARCHAR" property="stuffname"/>
@@ -86,6 +87,9 @@
       <if test="shouldminus != null">
         shouldminus,
       </if>
+      <if test="history != null">
+        history,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -132,6 +136,9 @@
       </if>
       <if test="shouldminus != null">
         #{shouldminus,jdbcType=DECIMAL},
+      </if>
+      <if test="history != null">
+        #{history,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -180,6 +187,9 @@
       <if test="shouldminus != null">
         shouldminus = #{shouldminus,jdbcType=DECIMAL},
       </if>
+      <if test="history != null">
+        history = #{history,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -187,7 +197,7 @@
   <select id="getAllStuffSalaryBySearch" resultMap="SalaryResultMap">
    select 
     should, actual, dayoff, quantity, balance, salary.remark, year, month, shouldplus,shouldminus,
-    salary.createtime, salary.updatetime, salary.dlt, salary.id,salary.stuffid,
+    salary.createtime, salary.updatetime, salary.dlt, salary.id,salary.stuffid,history,
    stuff.stuffname,stuff.basesalary,stuff.position
     from salary,stuff
     where salary.dlt=0 and stuff.id=salary.stuffid
@@ -233,7 +243,7 @@
   <select id="getSalaryDetailById" resultMap="SalaryResultMap">
    select 
     should, actual, dayoff, quantity, balance, salary.remark, year, month, shouldplus,shouldminus,
-    salary.createtime, salary.updatetime, salary.dlt, salary.id,salary.stuffid,
+    salary.createtime, salary.updatetime, salary.dlt, salary.id,salary.stuffid,history,
    stuff.stuffname,stuff.basesalary,stuff.position
     from salary,stuff
     where salary.dlt=0 and stuff.id=salary.stuffid

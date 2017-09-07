@@ -33,6 +33,8 @@ public class Salary {
     private BigDecimal shouldplus;
     
     private BigDecimal shouldminus;
+    
+    private BigDecimal history;
 
     public String getId() {
         return id;
@@ -152,5 +154,13 @@ public class Salary {
 
 	public void setShouldminus(BigDecimal shouldminus) {
 		this.shouldminus = shouldminus;
+	}
+
+	public BigDecimal getHistory() {
+		return history;
+	}
+
+	public void setHistory(BigDecimal history) {
+		this.history = history;
 	}
 }

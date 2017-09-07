@@ -54,14 +54,15 @@
 		<thead>
 			<tr style="background: #DBF1ED;">
 				<th class="col-xs-1">序号</th>
-				<th class="col-xs-2">姓名</th>
+				<th class="col-xs-1">姓名</th>
 				<th class="col-xs-2">职位</th>
 				<th class="col-xs-1">基本工资</th>
 				<th class="col-xs-1">提成</th>
 				<th class="col-xs-1">扣除</th>
 				<th class="col-xs-1">应发工资</th>
 				<th class="col-xs-1">实发工资</th>
-				<th colspan="2"  class="col-xs-2">操作</th>
+				<th class="col-xs-1">结余</th>
+				<th colspan="2"  class="col-xs-1">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -78,6 +79,7 @@
 				<td>${myList.shouldminus}</td>
 				<td>${myList.should }
 				<td>${myList.actual }
+				<td>${myList.balance }
 				<td>
 					<a href="${basePath }rest/stuff/toSaveOrupdateStuffSalary?id=${myList.id}" >详情</a>
 				</td>

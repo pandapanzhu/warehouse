@@ -99,21 +99,24 @@
 					</div>
 					<label class="col-sm-2 control-label">实发:</label>
 					<div class="col-sm-2">
-						<input type="text" class="form-control" placeholder="${detail.actual}" name="actual"  >
+						<input type="text" class="form-control" value="${detail.actual}" name="actual"  >
 					</div>
-					<label class="col-sm-2 control-label">结余:</label>
+					<label class="col-sm-2 control-label">本月结余:</label>
 					<div class="col-sm-2">
-						<input type="text" class="form-control" placeholder="请输入结余"  value="${detail.balance}" readonly>
+						<input type="text" class="form-control"  value="${detail.balance}" readonly>
 					</div>
-					
 				</div>
-			<!-- 	<div class="form-group">
-					<div class="myButton">
+			 	<div class="form-group">
+						<label class="col-sm-2 control-label">历史结余:</label>
+					<div class="col-sm-2">
+						<input type="text" class="form-control"  value="${detail.history}" readonly>
+					</div>
+					<!-- <div class="myButton">
 					<button type="button" class="btn btn-warning" id="modifyButton" style="display: none;">修改 </button>
 					<button type="button" class="btn btn-primary" id="subButton">保存</button>
 					<button type="button" class="btn btn-danger" id="backButton" onclick="javascript:history.go(-1)">返回</button>
-					</div>
-				</div>		 -->		
+					</div> -->
+				</div>				
 				<input type="hidden" name="id" id="hiddenId" value="${detail.id}">
 				
 			</form>
@@ -200,7 +203,7 @@
 		  		<div class="col-sm-6">
 				  	<select class="form-control" id="addType">
 				  		<option value="1">添加奖金</option>
-				  		<option value="2">添加罚款</option>
+				  		<option value="2">添加扣款</option>
 				  	</select>
 			  	</div>
 			  </div>
